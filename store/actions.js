@@ -1,19 +1,21 @@
 import axios from 'axios';
 import {
-  RAPID_KEY,
   CRIMINAL_KEY,
-  ZENSERP_KEY,
-  COURT_LISTENER_KEY,
-  TIME_TAGS_KEY,
-  THE_NEWS_API_KEY,
-} from '@env';
-import {
-  completeCriminalCheckKey,
   rapidHeader,
-  rapidKey,
-  theNewsApiKey,
-  zenserpKey,
+  RAPID_KEY,
+  THE_NEWS_API_KEY,
+  TIME_TAGS_KEY,
+  ZENSERP_KEY,
 } from '../constants/constants';
+// import {
+//   RAPID_KEY,
+//   CRIMINAL_KEY,
+//   ZENSERP_KEY,
+//   COURT_LISTENER_KEY,
+//   TIME_TAGS_KEY,
+//   THE_NEWS_API_KEY,
+// } from '@env';
+
 export const zenserp = (q, tbm, searchEngine) => {
   return {
     type: 'GET_DATA',
