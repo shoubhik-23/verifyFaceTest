@@ -53,7 +53,6 @@ const RenderItems = ({item}) => {
   );
 };
 const Translate = obj => {
-  console.log(1, obj);
   let temp = [];
   const values = Object.entries(obj);
   values.forEach((el, i) => {

@@ -16,6 +16,7 @@ import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {zenserp} from '../../store/actions';
 import HorizontalList from '../../components/lists/HorizontalList';
+import Translate from '../../components/helper/Translate';
 
 function ZenYoutube(props) {
   const [search, setSearch] = useState('');
@@ -138,7 +139,7 @@ function ZenYoutube(props) {
                     marginVertical: 30,
                     flexWrap: 'wrap',
                   }}>
-                  {clearJSX(el)}
+                  {<Translate obj={el} />}
                 </View>
               ))}
             </View>

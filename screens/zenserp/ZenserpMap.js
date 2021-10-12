@@ -5,6 +5,7 @@ import React, {useState} from 'react';
 import {Alert, Dimensions, Linking, ScrollView, Text, View} from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import Translate from '../../components/helper/Translate';
 import {zenserp} from '../../store/actions';
 
 function ZenserpMap(props) {
@@ -112,7 +113,7 @@ function ZenserpMap(props) {
                     marginVertical: 30,
                     flexWrap: 'wrap',
                   }}>
-                  {clearJSX(el)}
+                  {<Translate obj={el} />}
                 </View>
               ))}
             </View>

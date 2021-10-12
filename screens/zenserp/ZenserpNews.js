@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import Translate from '../../components/helper/Translate';
 import HorizontalList from '../../components/lists/HorizontalList';
 import {zenserp} from '../../store/actions';
 
@@ -135,7 +136,7 @@ function ZenserpNews(props) {
                     padding: 5,
                     flexWrap: 'wrap',
                   }}>
-                  {clearJSX(el)}
+                  {<Translate obj={el} />}
                 </View>
               ))}
             </View>

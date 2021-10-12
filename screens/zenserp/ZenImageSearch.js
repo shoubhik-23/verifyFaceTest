@@ -15,6 +15,8 @@ import {
   View,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
+import Translate from '../../components/helper/Translate';
+
 import {connect} from 'react-redux';
 import {zenserp} from '../../store/actions';
 const RenderItems = ({item}) => {
@@ -158,7 +160,7 @@ function ZenImageSearch(props) {
                     marginVertical: 30,
                     flexWrap: 'wrap',
                   }}>
-                  {clearJSX(el)}
+                  {<Translate obj={el} />}
                 </View>
               ))}
             </View>

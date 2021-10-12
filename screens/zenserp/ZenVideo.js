@@ -5,6 +5,7 @@ import React, {useMemo, useState} from 'react';
 import {Alert, Dimensions, Linking, ScrollView, Text, View} from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import Translate from '../../components/helper/Translate';
 import {zenserp} from '../../store/actions';
 const objectToJsx = obj => {
   let temp = [];
@@ -98,7 +99,7 @@ function ZenVideo(props) {
                     marginVertical: 30,
                     flexWrap: 'wrap',
                   }}>
-                  {objectToJsx(el)}
+                  {<Translate obj={el} />}
                 </View>
               ))}
             </View>
