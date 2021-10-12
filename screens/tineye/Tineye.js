@@ -10,6 +10,7 @@ import {
   FlatList,
   Image,
   Linking,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
@@ -24,13 +25,26 @@ import {
 } from 'react-native-paper';
 import {connect} from 'react-redux';
 import {tinEyeFile, tinEyeUrl} from '../../store/actions';
-var TinEye = require('tineye-api');
-var apiKey = '6mm60lsCNIB,FwOWjJqA80QZHh9BMwc-ber4u=t^';
-var api = new TinEye('https://api.tineye.com/rest/', apiKey);
-
+const Translate = obj => {
+  let temp = [];
+  const values = Object.entries(obj);
+  values.forEach((el, i) => {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>
+          {JSON.stringify(el[0])} :
+        </Text>
+        <Text>{JSON.stringify(el[1])}</Text>
+      </View>,
+    );
+  });
+  return temp;
+};
 function Tineye(props) {
   const [inputValue, setInputValue] = useState('');
   const [checked, setChecked] = React.useState('first');
+  const [showRaw, setShowRaw] = useState(false);
+  const [rawJson, setRawJson] = useState();
 
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,32 +54,40 @@ function Tineye(props) {
       .then(res => setSingleFile(res[0]))
       .catch(err => console.log(err));
   };
-  const onSubmitHandler = () => {
+  const onSubmitHandler = type => {
+    console.log(type);
+    type === 'raw' ? setShowRaw(true) : setShowRaw(false);
     setLoading(true);
     checked === 'first'
       ? props
-          .postImageUrl(inputValue, 2)
+          .postImageUrl(inputValue, 10)
           .then(data => {
+            console.log(data);
+            setRawJson(data.payload.data.results.matches);
             setLoading(false);
             data.payload
               ? setSearchResult([...data.payload.data.results.matches])
               : Alert.alert('Error', 'Something went wrong');
           })
           .catch(_err => {
+            console.log(_err);
             setLoading(false);
             Alert.alert('Error', 'Something went wrong');
           })
       : props
           .postImageFile(singleFile, 10)
           .then(data => {
+            setRawJson(data.payload.data.results.matches);
+
             setLoading(false);
-            data.payload
+            data.payload.data.results.matches.length > 0
               ? setSearchResult([...data.payload.data.results.matches])
-              : Alert.alert('Error', 'Something went wrong');
+              : Alert.alert('Error', 'No Records found');
           })
           .catch(_err => {
+            console.log(10, _err);
             setLoading(false);
-            Alert.alert('Error', 'Something went wrong');
+            Alert.alert('Error', 'Soething went wrong');
           });
   };
 
@@ -88,8 +110,8 @@ function Tineye(props) {
           }}>
           <View
             style={{
-              width: 120,
-              height: 120,
+              width: 100,
+              height: 100,
               borderRadius: 20,
               margin: 10,
               overflow: 'hidden',
@@ -108,14 +130,14 @@ function Tineye(props) {
     <View style={{flex: 1}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
-      ) : searchResult.length > 0 ? (
+      ) : searchResult.length > 0 && !showRaw ? (
         <FlatList
           style={{flex: 1}}
           numColumns={3}
           data={searchResult}
           renderItem={RenderItems}></FlatList>
       ) : (
-        <View style={{flex: 1, padding: 20}}>
+        <ScrollView style={{flex: 1, padding: 20}}>
           <View>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <RadioButton
@@ -172,11 +194,27 @@ function Tineye(props) {
             <Button
               icon="search-web"
               mode="contained"
-              onPress={onSubmitHandler}>
+              onPress={() => onSubmitHandler('search')}>
               Search
             </Button>
+            <Button
+              style={{marginVertical: 10}}
+              icon="search-web"
+              mode="contained"
+              onPress={() => onSubmitHandler('raw')}>
+              Get Raw Json Data
+            </Button>
           </View>
-        </View>
+          {showRaw
+            ? searchResult.map((el, i) => (
+                <View
+                  key={i}
+                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  {Translate(el)}
+                </View>
+              ))
+            : null}
+        </ScrollView>
       )}
     </View>
   );

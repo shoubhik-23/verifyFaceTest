@@ -15,10 +15,25 @@ import {
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {jailBase} from '../../store/actions';
+const objectToJsx = object => {
+  let temp = [];
+  for (let i in object) {
+    temp.push(
+      <View
+        key={Math.random()}
+        style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}> {i} : </Text>
+        <Text>{object[i]}</Text>
+      </View>,
+    );
+  }
+  return temp;
+};
 
 function JailRecent(props) {
   const [inputValue, setInputValue] = useState('');
   const [data, setData] = useState([]);
+  const [jailInfo, setJailInfo] = useState('');
   const [loading, setLoading] = useState(false);
   const onChangeHandler = text => {
     setInputValue(text);
@@ -29,6 +44,7 @@ function JailRecent(props) {
       .getJailRecent(inputValue)
       .then(data => {
         setLoading(false);
+        setJailInfo(data.payload.data.jail);
 
         let temp = data.payload.data.records.map((el, i) => {
           return {
@@ -43,7 +59,6 @@ function JailRecent(props) {
         Alert.alert('Error', 'Something went wrong');
       });
   };
-  console.log(data);
   const RenderItems = ({item, index}) => {
     return (
       <TouchableOpacity
@@ -88,10 +103,31 @@ function JailRecent(props) {
 
           {item.show ? (
             <View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontWeight: 'bold'}}>Book Date : </Text>
+                <Text>{item.book_date_formatted}</Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontWeight: 'bold'}}>id : </Text>
+                <Text>{item.id}</Text>
+              </View>
               <Text style={{fontWeight: 'bold'}}>Charges:</Text>
-              {item.charges.map(el => (
-                <Text>* {el}</Text>
+              {item.charges.map((el, id) => (
+                <Text key={id}>* {el}</Text>
               ))}
+              <View
+                style={{
+                  marginTop: 30,
+                  width: Dimensions.get('window').width / 3,
+                  alignSelf: 'center',
+                }}>
+                <Button
+                  icon="more"
+                  mode="contained"
+                  onPress={() => Linking.openURL(item.more_info_url)}>
+                  More Info
+                </Button>
+              </View>
             </View>
           ) : null}
         </View>
@@ -104,12 +140,19 @@ function JailRecent(props) {
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : data.length > 0 ? (
-        <FlatList
-          style={{marginBottom: 50}}
-          data={data}
-          renderItem={RenderItems}
-          keyExtractor={item => item.id}
-        />
+        <View>
+          <View>
+            <Text style={{fontWeight: 'bold'}}>Jail Information: </Text>
+          </View>
+          <View>{objectToJsx(jailInfo)}</View>
+
+          <FlatList
+            style={{marginBottom: 50}}
+            data={data}
+            renderItem={RenderItems}
+            keyExtractor={item => item.id}
+          />
+        </View>
       ) : (
         <View style={{flex: 1}}>
           <View>
@@ -121,7 +164,7 @@ function JailRecent(props) {
           </View>
           <View>
             <Text style={{marginVertical: 10, fontSize: 18}}>
-              The id of a specific organization to search (use 'az-mcso' for
+              The id of a specific organization to search (use 'al-myso' for
               test). Full list
               <Text
                 onPress={() =>

@@ -3,7 +3,6 @@ import React from 'react';
 import {FlatList, View} from 'react-native';
 import Items from '../../components/items/items';
 const data = [
-  {name: 'Video Search', routeName: 'ZenserpVideo', color: '#f5a442'},
   {name: 'Youtube Search', routeName: 'YouTubeSearch', color: '#9eecff'},
   {
     name: 'Zenserp Image Search',
@@ -12,6 +11,7 @@ const data = [
   },
   {name: 'Map Search', routeName: 'MapSearch', color: '#b9ffb0'},
   {name: 'News Search', routeName: 'NewsSearch', color: '#41d95d'},
+  {name: 'Video Search', routeName: 'ZenserpVideo', color: '#f5a442'},
 ];
 
 function ZenserpDashboard(props) {

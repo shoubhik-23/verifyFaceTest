@@ -7,40 +7,46 @@ import {
   FlatList,
   Linking,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {courtListenerOriginatingCourtInfo} from '../../store/actions';
-const RenderItems = ({item}) => {
+const RenderItems = ({item, navigation}) => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        margin: 10,
-
-        borderColor: 'black',
-        borderWidth: 1,
-        padding: 10,
-      }}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('OriginatingCourtDetails', {data: item})
+      }>
       <View
         style={{
-          flex: 1,
+          flexDirection: 'row',
+          margin: 10,
+
+          borderColor: 'black',
+          borderWidth: 1,
+          padding: 10,
         }}>
-        <Text
-          style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
-          onPress={() => {}}>
-          {item.docket_number}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontWeight: 'bold'}}>Date Filed : </Text>
-          <Text>{item.date_filed ? item.date_filed : 'N/A'}</Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontWeight: 'bold'}}>Assigned To : </Text>
-          <Text>{item.assigned_to_str ? item.assigned_to_str : 'N/A'}</Text>
+        <View
+          style={{
+            flex: 1,
+          }}>
+          <Text
+            style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
+            onPress={() => {}}>
+            {item.docket_number}
+          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontWeight: 'bold'}}>Date Filed : </Text>
+            <Text>{item.date_filed ? item.date_filed : 'N/A'}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontWeight: 'bold'}}>Assigned To : </Text>
+            <Text>{item.assigned_to_str ? item.assigned_to_str : 'N/A'}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -72,7 +78,7 @@ function OriginatingCourt(props) {
         <FlatList
           style={{marginBottom: 50}}
           data={data}
-          renderItem={RenderItems}
+          renderItem={fprops => <RenderItems {...fprops} {...props} />}
           keyExtractor={item => item.uuid}
         />
       )}

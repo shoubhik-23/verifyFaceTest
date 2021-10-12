@@ -2,23 +2,70 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
 import React, {useState} from 'react';
-import {Alert, Dimensions, Linking, Text, View} from 'react-native';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Linking,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import HorizontalList from '../../components/lists/HorizontalList';
 import {zenserp} from '../../store/actions';
 
 function ZenserpNews(props) {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
+  const [renderData, setRenderData] = useState([]);
+  const [showRaw, setShowRaw] = useState(false);
   const onChangeHandler = text => {
     setSearch(text);
   };
-  const onSearchHandler = () => {
+  let temp = [];
+  const clearJSX = obj => {
+    objectToJSX(obj);
+    return (temp = []);
+  };
+  const objectToJSX = obj => {
+    for (let i in obj) {
+      if (typeof obj[i] === 'object') {
+        objectToJSX(obj[i]);
+      } else {
+        temp.push(
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>{i} :</Text>
+            <Text>{obj[i]}</Text>
+          </View>,
+        );
+      }
+    }
+    return temp;
+  };
+
+  const onSubmitHandler = type => {
     setLoading(true);
     props
       .fetchData(search)
       .then(data => {
-        Linking.openURL(data.payload.data.query.url);
+        if (data.type === 'GET_DATA_FAIL') {
+          setLoading(false);
+          if (data.error.response.data.error) {
+            return Alert.alert(`${data.error.response.data.error}`);
+          }
+        }
+        if (type === 'render') {
+          setRenderData(data.payload.data.news_results);
+          setShowRaw(false);
+        } else if (type === 'raw') {
+          setRenderData(data.payload.data.news_results);
+
+          setShowRaw(true);
+        } else {
+          Linking.openURL(data.payload.data.query.url);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -26,12 +73,24 @@ function ZenserpNews(props) {
         setLoading(false);
       });
   };
+
   return (
     <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
+      ) : renderData.length > 0 && !showRaw ? (
+        <FlatList
+          data={renderData}
+          renderItem={({item, index}) => (
+            <HorizontalList
+              title={item.title}
+              image_url={item.thumbnail}
+              url={item.link}
+            />
+          )}
+        />
       ) : (
-        <View style={{flex: 1}}>
+        <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
               placeholder="news search"
@@ -48,11 +107,40 @@ function ZenserpNews(props) {
             <Button
               icon="search-web"
               mode="contained"
-              onPress={onSearchHandler}>
-              SUBMIT
+              onPress={() => onSubmitHandler('search')}>
+              Search Google
+            </Button>
+            <Button
+              icon="search-web"
+              mode="contained"
+              style={{marginVertical: 20}}
+              onPress={() => onSubmitHandler('render')}>
+              Render Here
+            </Button>
+            <Button
+              icon="search-web"
+              mode="contained"
+              onPress={() => onSubmitHandler('raw')}>
+              Get Raw Json
             </Button>
           </View>
-        </View>
+          {showRaw ? (
+            <View style={{marginTop: 20}}>
+              {renderData.map((el, i) => (
+                <View
+                  key={i}
+                  style={{
+                    borderWidth: 1,
+                    marginVertical: 30,
+                    padding: 5,
+                    flexWrap: 'wrap',
+                  }}>
+                  {clearJSX(el)}
+                </View>
+              ))}
+            </View>
+          ) : null}
+        </ScrollView>
       )}
     </View>
   );

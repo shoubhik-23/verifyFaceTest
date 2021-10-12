@@ -1,15 +1,30 @@
 /* eslint-disable handle-callback-err */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
-import React, {useState} from 'react';
-import {Alert, Dimensions, Linking, Text, View} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {Alert, Dimensions, Linking, ScrollView, Text, View} from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {zenserp} from '../../store/actions';
+const objectToJsx = obj => {
+  let temp = [];
+  for (let i in obj) {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>{i} :</Text>
+        <Text>{obj[i]}</Text>
+      </View>,
+    );
+  }
+  return temp;
+};
 
 function ZenVideo(props) {
   const [search, setSearch] = useState('');
+  const [data, setData] = useState([]);
+  const [showRaw, setShowRaw] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const onChangeHandler = text => {
     setSearch(text);
   };
@@ -26,12 +41,26 @@ function ZenVideo(props) {
         setLoading(false);
       });
   };
+  const showRawDataHandler = () => {
+    setLoading(true);
+    props
+      .fetchData(search)
+      .then(data => {
+        setData(data.payload.data.video_results);
+        setShowRaw(true);
+        setLoading(false);
+      })
+      .catch(err => {
+        Alert.alert('Something went wrong');
+        setLoading(false);
+      });
+  };
   return (
     <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : (
-        <View style={{flex: 1}}>
+        <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
               placeholder="video search"
@@ -49,10 +78,32 @@ function ZenVideo(props) {
               icon="search-web"
               mode="contained"
               onPress={onSearchHandler}>
-              SUBMIT
+              Search
+            </Button>
+            <Button
+              style={{marginVertical: 10}}
+              icon="search-web"
+              mode="contained"
+              onPress={showRawDataHandler}>
+              Get Raw Json Data
             </Button>
           </View>
-        </View>
+          {showRaw ? (
+            <View style={{marginTop: 20}}>
+              {data.map((el, i) => (
+                <View
+                  key={i}
+                  style={{
+                    borderWidth: 1,
+                    marginVertical: 30,
+                    flexWrap: 'wrap',
+                  }}>
+                  {objectToJsx(el)}
+                </View>
+              ))}
+            </View>
+          ) : null}
+        </ScrollView>
       )}
     </View>
   );

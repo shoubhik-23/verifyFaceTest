@@ -8,6 +8,7 @@ import {
   FlatList,
   Linking,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
@@ -17,45 +18,48 @@ import {
   courtListenerOriginatingCourtInfo,
   courtListenerSearch,
 } from '../../store/actions';
-const RenderItems = ({item}) => {
+const RenderItems = ({item, navigation}) => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        margin: 10,
-
-        borderColor: 'black',
-        borderWidth: 1,
-        padding: 10,
-      }}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('CaseSearchDetails', {data: item})}>
       <View
         style={{
-          flex: 1,
+          flexDirection: 'row',
+          margin: 10,
+
+          borderColor: 'black',
+          borderWidth: 1,
+          padding: 10,
         }}>
-        <Text
-          style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
-          onPress={() => {}}>
-          {item.caseName}
-        </Text>
-        <Text
-          style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
-          onPress={() => {}}>
-          {item.docketNumber}
-        </Text>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontWeight: 'bold'}}>Date Filed : </Text>
-          <Text>{item.dateFiled ? item.dateFiled : 'N/A'}</Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontWeight: 'bold'}}>Status : </Text>
-          <Text>{item.status}</Text>
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{fontWeight: 'bold'}}>Court : </Text>
-          <Text>{item.court}</Text>
+        <View
+          style={{
+            flex: 1,
+          }}>
+          <Text
+            style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
+            onPress={() => {}}>
+            {item.caseName}
+          </Text>
+          <Text
+            style={{fontSize: 15, flex: 1, fontWeight: 'bold'}}
+            onPress={() => {}}>
+            {item.docketNumber}
+          </Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontWeight: 'bold'}}>Date Filed : </Text>
+            <Text>{item.dateFiled ? item.dateFiled : 'N/A'}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontWeight: 'bold'}}>Status : </Text>
+            <Text>{item.status}</Text>
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{fontWeight: 'bold'}}>Court : </Text>
+            <Text>{item.court}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -92,7 +96,7 @@ function CaseSearch(props) {
         <FlatList
           style={{marginBottom: 50}}
           data={data}
-          renderItem={RenderItems}
+          renderItem={fprops => <RenderItems {...fprops} {...props} />}
           keyExtractor={item => item.uuid}
         />
       ) : (

@@ -16,6 +16,7 @@ import webImageSearch from './screens/webSearch/WebImageSearch';
 import {jailBase} from './store/actions';
 import ZenYoutube from './screens/zenserp/ZenYoutube';
 import ZenImageSearch from './screens/zenserp/ZenImageSearch';
+import PeopleSearch from './screens/microbilt/PeopleSearch';
 
 import JailBaseDashboard from './screens/jailBase/JailBaseDashboard';
 import JailRecent from './screens/jailBase/JailRecent';
@@ -33,12 +34,15 @@ import Audio from './screens/courtListener/Audio';
 import CaseSearch from './screens/courtListener/CaseSearch';
 import WebNewsSearch from './screens/webSearch/WebNewsSearch';
 import WebSearch from './screens/webSearch/WebSearch';
+import CriminalDetails from './screens/criminalCheck/CriminalDetails';
+import OrignationgDetail from './screens/courtListener/OrignationgDetail';
+import DocketDetails from './screens/courtListener/DocketDetails';
+import AudioDetails from './screens/courtListener/AudioDetails';
+import CaseSearchDetails from './screens/courtListener/CaseSearchDetails';
 // import QueueComponent from './test/Queue';
 const Stacks = createNativeStackNavigator();
 
 function App() {
-  const variable = DEV_BACKEND_URL;
-  console.log(variable);
   return (
     <NavigationContainer>
       <Stacks.Navigator>
@@ -47,6 +51,9 @@ function App() {
         <Stacks.Screen
           name="WebSearchDash"
           component={WebSearchDashboard}></Stacks.Screen>
+        <Stacks.Screen
+          name="MicroBilt"
+          component={PeopleSearch}></Stacks.Screen>
         <Stacks.Screen name="Trending" component={Trending}></Stacks.Screen>
         <Stacks.Screen
           name="WebNewsSearch"
@@ -65,8 +72,22 @@ function App() {
         <Stacks.Screen
           name="OriginatingCourt"
           component={OriginatingCourt}></Stacks.Screen>
+        <Stacks.Screen
+          name="OriginatingCourtDetails"
+          component={OrignationgDetail}></Stacks.Screen>
         <Stacks.Screen name="Dockets" component={Docket}></Stacks.Screen>
+        <Stacks.Screen
+          name="DocketDetails"
+          component={DocketDetails}></Stacks.Screen>
+
         <Stacks.Screen name="Audio" component={Audio}></Stacks.Screen>
+        <Stacks.Screen
+          name="AudioDetails"
+          component={AudioDetails}></Stacks.Screen>
+        <Stacks.Screen
+          name="CaseSearchDetails"
+          component={CaseSearchDetails}></Stacks.Screen>
+
         <Stacks.Screen name="CaseSearch" component={CaseSearch}></Stacks.Screen>
 
         <Stacks.Screen
@@ -101,6 +122,9 @@ function App() {
           name="CriminalCheck"
           component={CriminalCheck}></Stacks.Screen>
         <Stacks.Screen name="TineEye" component={Tineye}></Stacks.Screen>
+        <Stacks.Screen
+          name="CriminalDetails"
+          component={CriminalDetails}></Stacks.Screen>
       </Stacks.Navigator>
     </NavigationContainer>
   );

@@ -7,75 +7,100 @@ import {
   FlatList,
   Image,
   Linking,
+  ScrollView,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {contextWeb_ImageSearch} from '../../store/actions';
-
+const Translate = obj => {
+  let temp = [];
+  const values = Object.entries(obj);
+  values.forEach((el, i) => {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>
+          {JSON.stringify(el[0])} :
+        </Text>
+        <Text>{JSON.stringify(el[1])}</Text>
+      </View>,
+    );
+  });
+  return temp;
+};
+const RenderItems = ({item}) => {
+  return (
+    <TouchableOpacity onPress={() => Linking.openURL(item.webpageUrl)}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+        }}>
+        <View
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 20,
+            margin: 10,
+            overflow: 'hidden',
+          }}>
+          <Image
+            style={{width: '100%', height: '100%'}}
+            source={{uri: item.thumbnail}}
+          />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 function WebImageSearch(props) {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showRaw, setShowRaw] = useState(false);
+
   const [data, setData] = useState([]);
   const onChangeHandler = text => {
     setInputValue(text);
   };
-  const imageSearchHandler = () => {
+
+  const onSubmitHandler = type => {
     setLoading(true);
+    type === 'raw' ? setShowRaw(true) : setShowRaw(false);
+
     props
       .fetchData(inputValue)
       .then(data => {
+        console.log(data);
+        setData(data.payload.data.value);
         setLoading(false);
-        data && setData([...data.payload.data.value]);
       })
       .catch(err => {
-        setLoading(false);
-        Alert.alert('Something wrong happened . Please try after sometime');
         console.log(err);
+        setLoading(false);
+
+        Alert.alert('something went wrong');
       });
   };
-  const RenderItems = ({item}) => {
-    return (
-      <TouchableOpacity onPress={() => Linking.openURL(item.webpageUrl)}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <View
-            style={{
-              width: 120,
-              height: 120,
-              borderRadius: 20,
-              margin: 10,
-              overflow: 'hidden',
-            }}>
-            <Image
-              style={{width: '100%', height: '100%'}}
-              source={{uri: item.thumbnail}}
-            />
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  };
+
   return (
     <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
-      ) : data.length > 0 ? (
+      ) : data.length > 0 && !showRaw ? (
         <FlatList
-          style={{flex: 1}}
+          style={{flex: 1, flexWrap: 'wrap'}}
           numColumns={3}
           data={data}
           renderItem={RenderItems}></FlatList>
       ) : (
-        <View>
+        <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
-              placeholder="search for image"
+              placeholder="search news"
               mode="outlined"
               onChangeText={onChangeHandler}
               value={inputValue}></TextInput>
@@ -89,11 +114,27 @@ function WebImageSearch(props) {
             <Button
               icon="search-web"
               mode="contained"
-              onPress={imageSearchHandler}>
-              Search
+              style={{marginVertical: 20}}
+              onPress={() => onSubmitHandler('render')}>
+              Render Here
+            </Button>
+            <Button
+              icon="search-web"
+              mode="contained"
+              onPress={() => onSubmitHandler('raw')}>
+              Get Raw Json
             </Button>
           </View>
-        </View>
+          {showRaw
+            ? data.map((el, i) => (
+                <View
+                  key={i}
+                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  {Translate(el)}
+                </View>
+              ))
+            : null}
+        </ScrollView>
       )}
     </View>
   );

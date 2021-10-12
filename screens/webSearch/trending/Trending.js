@@ -1,8 +1,17 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {Alert, FlatList, Image, Linking, Text, View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
+import {
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  Linking,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
+import {ActivityIndicator, Button} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {contextWeb_Trending} from '../../../store/actions';
 const RenderItems = ({item}) => {
@@ -43,12 +52,31 @@ const RenderItems = ({item}) => {
     </View>
   );
 };
+const Translate = obj => {
+  let temp = [];
+  const values = Object.entries(obj);
+  values.forEach((el, i) => {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>
+          {JSON.stringify(el[0])} :
+        </Text>
+        <Text>{JSON.stringify(el[1])}</Text>
+      </View>,
+    );
+  });
+  return temp;
+};
 
 function Trending(props) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [showRaw, setShowRaw] = useState(false);
 
-  useEffect(() => {
+  const onSubmitHandler = type => {
+    setLoading(true);
+    type === 'raw' ? setShowRaw(true) : setShowRaw(false);
+
     props
       .callAPI()
       .then(data => {
@@ -61,19 +89,51 @@ function Trending(props) {
 
         Alert.alert('something went wrong');
       });
-  }, []);
+  };
 
   return (
     <View style={{flex: 1}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
-      ) : (
+      ) : data.length > 0 && !showRaw ? (
         <FlatList
           style={{marginBottom: 50}}
           data={data}
           renderItem={RenderItems}
           keyExtractor={item => item.id}
         />
+      ) : (
+        <ScrollView style={{flex: 1}}>
+          <View
+            style={{
+              marginTop: 30,
+              width: Dimensions.get('window').width / 2,
+              alignSelf: 'center',
+            }}>
+            <Button
+              icon="search-web"
+              mode="contained"
+              style={{marginVertical: 20}}
+              onPress={() => onSubmitHandler('render')}>
+              Render Here
+            </Button>
+            <Button
+              icon="search-web"
+              mode="contained"
+              onPress={() => onSubmitHandler('raw')}>
+              Get Raw Json
+            </Button>
+          </View>
+          {showRaw
+            ? data.map((el, i) => (
+                <View
+                  key={i}
+                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  {Translate(el)}
+                </View>
+              ))
+            : null}
+        </ScrollView>
       )}
     </View>
   );

@@ -8,6 +8,7 @@ import {
   Image,
   Linking,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
@@ -60,38 +61,41 @@ function CriminalCheck(props) {
   };
   const RenderItems = ({item}) => {
     return (
-      <View
-        style={{
-          flexDirection: 'row',
-          margin: 10,
-
-          borderColor: 'black',
-          borderWidth: 1,
-          padding: 10,
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.navigate('CriminalDetails', {data: item});
         }}>
         <View
           style={{
-            height: 80,
-            width: 80,
-            borderRadius: 10,
-            overflow: 'hidden',
-            marginRight: 15,
-            marginLeft: 1,
-          }}>
-          <Image
-            style={{height: '100%', width: '100%'}}
-            source={{uri: item.image}}></Image>
-        </View>
-        <View
-          style={{
             flexDirection: 'row',
-            flex: 1,
+            margin: 10,
+
+            borderColor: 'black',
+            borderWidth: 1,
+            padding: 10,
           }}>
-          <Text style={{fontSize: 15, flex: 1}} onPress={() => {}}>
-            {item.name}
-          </Text>
+          <View
+            style={{
+              height: 80,
+              width: 80,
+              borderRadius: 10,
+              overflow: 'hidden',
+              marginRight: 15,
+              marginLeft: 1,
+            }}>
+            <Image
+              style={{height: '100%', width: '100%', backgroundColor: 'grey'}}
+              source={{uri: item.image}}></Image>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              flex: 1,
+            }}>
+            <Text style={{fontSize: 15, flex: 1}}>{item.name}</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   Linking,
+  ScrollView,
   Text,
   View,
 } from 'react-native';
@@ -51,35 +52,53 @@ const RenderItems = ({item}) => {
     </View>
   );
 };
-
+const Translate = obj => {
+  let temp = [];
+  const values = Object.entries(obj);
+  values.forEach((el, i) => {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>
+          {JSON.stringify(el[0])} :
+        </Text>
+        <Text>{JSON.stringify(el[1])}</Text>
+      </View>,
+    );
+  });
+  return temp;
+};
 function WebNewsSearch(props) {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [showRaw, setShowRaw] = useState(false);
 
   const [data, setData] = useState([]);
   const onChangeHandler = text => {
     setInputValue(text);
   };
-
-  const newsSearchHandler = () => {
+  const onSubmitHandler = type => {
     setLoading(true);
+    type === 'raw' ? setShowRaw(true) : setShowRaw(false);
+
     props
       .callAPI(inputValue)
       .then(data => {
+        console.log(data);
+        setData(data.payload.data.value);
         setLoading(false);
-        data && setData([...data.payload.data.value]);
       })
       .catch(err => {
-        setLoading(false);
-        Alert.alert('Something wrong happened . Please try after sometime');
         console.log(err);
+        setLoading(false);
+
+        Alert.alert('something went wrong');
       });
   };
   return (
     <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
-      ) : data.length > 0 ? (
+      ) : data.length > 0 && !showRaw ? (
         <FlatList
           style={{marginBottom: 50}}
           data={data}
@@ -87,10 +106,10 @@ function WebNewsSearch(props) {
           keyExtractor={item => item.id}
         />
       ) : (
-        <View>
+        <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
-              placeholder="search for image"
+              placeholder="search news"
               mode="outlined"
               onChangeText={onChangeHandler}
               value={inputValue}></TextInput>
@@ -104,11 +123,27 @@ function WebNewsSearch(props) {
             <Button
               icon="search-web"
               mode="contained"
-              onPress={newsSearchHandler}>
-              Search
+              style={{marginVertical: 20}}
+              onPress={() => onSubmitHandler('render')}>
+              Render Here
+            </Button>
+            <Button
+              icon="search-web"
+              mode="contained"
+              onPress={() => onSubmitHandler('raw')}>
+              Get Raw Json
             </Button>
           </View>
-        </View>
+          {showRaw
+            ? data.map((el, i) => (
+                <View
+                  key={i}
+                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  {Translate(el)}
+                </View>
+              ))
+            : null}
+        </ScrollView>
       )}
     </View>
   );

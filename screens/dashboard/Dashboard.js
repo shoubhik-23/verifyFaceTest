@@ -20,6 +20,7 @@ function Dashboard(props) {
     {name: 'The News', routeName: 'TheNews', color: '#41d95d'},
     {name: 'CourtListener', routeName: 'CourtListener', color: '#9eecff'},
     {name: 'Time Tags Api', routeName: 'TimeTagsApi', color: '#b9ffb0'},
+    {name: 'Micro Bilt', routeName: 'MicroBilt', color: '#f5a442'},
   ];
   return (
     <View style={{flex: 1, padding: 10}}>

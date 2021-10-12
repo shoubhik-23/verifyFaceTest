@@ -1,9 +1,9 @@
 const initialState = {
-  data: [],
+  token: 'A',
 };
-const reducer = (state, action) => {
-  if (action.type === 'GET_DATA') {
-    console.log(action.payload);
+const reducer = (state = initialState, action) => {
+  if (action.type === 'setToken') {
+    return {...state, token: action.payload.token};
   }
   return state;
 };

@@ -5,6 +5,8 @@ import {
   RAPID_KEY,
   THE_NEWS_API_KEY,
   TIME_TAGS_KEY,
+  TIN_EYE,
+  TIN_EYE_SANDBOX,
   ZENSERP_KEY,
 } from '../constants/constants';
 // import {
@@ -15,7 +17,14 @@ import {
 //   TIME_TAGS_KEY,
 //   THE_NEWS_API_KEY,
 // } from '@env';
-
+export const setMicrobiltToken = token => {
+  return {
+    type: 'setToken',
+    payload: {
+      token: token,
+    },
+  };
+};
 export const zenserp = (q, tbm, searchEngine) => {
   return {
     type: 'GET_DATA',
@@ -179,7 +188,7 @@ export const tinEyeUrl = (url, limit) => {
           limit: limit,
         },
         headers: {
-          'x-api-key': '6mm60lsCNIB,FwOWjJqA80QZHh9BMwc-ber4u=t^',
+          'x-api-key': TIN_EYE,
         },
       },
     },
@@ -199,7 +208,7 @@ export const tinEyeFile = (file, limit) => {
           limit: limit,
         },
         headers: {
-          'x-api-key': '6mm60lsCNIB,FwOWjJqA80QZHh9BMwc-ber4u=t^',
+          'x-api-key': TIN_EYE,
         },
         data: formData,
       },
@@ -314,6 +323,24 @@ export const timeTags = q => {
           query: q,
           max: 5,
           'api-key': TIME_TAGS_KEY,
+        },
+      },
+    },
+  };
+};
+export const enhancedPeopleSearch = (data, token) => {
+  return {
+    type: 'GET_DATA',
+    payload: {
+      client: 'microBilt',
+      request: {
+        method: 'POST',
+        url: '/EnhancedPeopleSearch/GetReport',
+        data: data,
+        headers: {
+          Authorization: token,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
       },
     },
