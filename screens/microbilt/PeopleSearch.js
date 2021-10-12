@@ -12,44 +12,11 @@ import {
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import Translate from '../../components/helper/Translate';
 import ModalComponent from '../../components/modal/Modal';
 import {enhancedPeopleSearch, setMicrobiltToken} from '../../store/actions';
 
 const PeopleSearchDetail = memo(props => {
-  const [jsxArray, setJsxArray] = useState([]);
-  const translation = object => {
-    let temp = [];
-    for (let i in object) {
-      if (i !== 'GEOCode') {
-        temp.push(
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}> {i} : </Text>
-            <Text>{object[i]}</Text>
-          </View>,
-        );
-      }
-    }
-    return temp;
-  };
-  let temp = [];
-  const clearJSX = obj => {
-    translation2(obj);
-    return (temp = []);
-  };
-  const translation2 = object => {
-    for (let i in object) {
-      if (typeof object[i] === 'object') {
-        translation2(object[i]);
-      } else
-        temp.push(
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>{i} :</Text>
-            <Text>{object[i]}</Text>
-          </View>,
-        );
-    }
-    return temp;
-  };
   return (
     <View style={{flex: 1}}>
       <ScrollView style={{flex: 1}}>
@@ -69,7 +36,7 @@ const PeopleSearchDetail = memo(props => {
           <Text style={{fontWeight: 'bold', fontSize: 16}}> EffDt : </Text>
           <Text>{props.data.EffDt}</Text>
         </View>
-        {translation(props.data.PersonName)}
+        {<Translate obj={props.data.PersonName} />}
         <View style={{marginVertical: 10}}>
           <Text
             style={{
@@ -80,7 +47,7 @@ const PeopleSearchDetail = memo(props => {
             }}>
             TINInfo:
           </Text>
-          {translation(props.data.TINInfo)}
+          {<Translate obj={props.data.TINInfo} />}
         </View>
         <View style={{marginVertical: 10}}>
           <Text
@@ -96,12 +63,10 @@ const PeopleSearchDetail = memo(props => {
             return (
               <View
                 style={{
-                  flexWrap: 'wrap',
                   marginVertical: 10,
-                  flexDirection: 'row',
+                  borderWidth: 1,
                 }}>
-                <Text style={{fontWeight: 'bold'}}>ContactInfo [{i}]</Text>
-                <View>{clearJSX(el)}</View>
+                <Translate obj={el}></Translate>
               </View>
             );
           })}
