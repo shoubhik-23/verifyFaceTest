@@ -17,14 +17,10 @@ import {
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 
-import {
-  ActivityIndicator,
-  Button,
-  RadioButton,
-  TextInput,
-} from 'react-native-paper';
+import {ActivityIndicator, RadioButton, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {tinEyeFile, tinEyeUrl} from '../../store/actions';
+import CustomButton from '../../components/button/CustomButton';
 const Translate = obj => {
   let temp = [];
   const values = Object.entries(obj);
@@ -115,9 +111,16 @@ function Tineye(props) {
               borderRadius: 20,
               margin: 10,
               overflow: 'hidden',
+              borderColor: 'white',
+              elevation: 8,
             }}>
             <Image
-              style={{width: '100%', height: '100%'}}
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: 20,
+                backgroundColor: 'gray',
+              }}
               source={{uri: item.image_url}}
             />
           </View>
@@ -127,12 +130,12 @@ function Tineye(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : searchResult.length > 0 && !showRaw ? (
         <FlatList
-          style={{flex: 1}}
+          style={{flex: 1, flexWrap: 'wrap'}}
           numColumns={3}
           data={searchResult}
           renderItem={RenderItems}></FlatList>
@@ -177,12 +180,11 @@ function Tineye(props) {
                   <Text>{singleFile.name}</Text>
                 </View>
               ) : null}
-              <Button
+              <CustomButton
                 icon="cloud-upload"
                 mode="contained"
-                onPress={ImageUploadeHandler}>
-                upload
-              </Button>
+                click={ImageUploadeHandler}
+                title="upload"></CustomButton>
             </View>
           )}
           <View
@@ -191,25 +193,27 @@ function Tineye(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={() => onSubmitHandler('search')}>
-              Search
-            </Button>
-            <Button
-              style={{marginVertical: 10}}
+              click={() => onSubmitHandler('search')}
+              title=" Search"></CustomButton>
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={() => onSubmitHandler('raw')}>
-              Get Raw Json Data
-            </Button>
+              click={() => onSubmitHandler('raw')}
+              title=" Get Raw Json Data"></CustomButton>
           </View>
           {showRaw
             ? searchResult.map((el, i) => (
                 <View
                   key={i}
-                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  style={{
+                    marginTop: 40,
+                    padding: 10,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}>
                   {Translate(el)}
                 </View>
               ))

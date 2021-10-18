@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import {jailBase} from '../../store/actions';
 const objectToJsx = object => {
   let temp = [];
@@ -71,9 +72,11 @@ function JailRecent(props) {
           style={{
             margin: 10,
 
-            borderColor: 'black',
-            borderWidth: 1,
+            borderRadius: 10,
+            backgroundColor: '#fff2e6',
+            elevation: 8,
             padding: 10,
+            marginVertical: 15,
           }}>
           <View
             style={{
@@ -182,12 +185,7 @@ function JailRecent(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
-              icon="search-web"
-              mode="contained"
-              onPress={onSubmitHandler}>
-              Search
-            </Button>
+            <CustomButton click={onSubmitHandler} title="Search" />
           </View>
         </View>
       )}

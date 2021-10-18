@@ -12,11 +12,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import {Button, TextInput} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {zenserp} from '../../store/actions';
 import HorizontalList from '../../components/lists/HorizontalList';
-import Translate from '../../components/helper/Translate';
+import CustomButton from '../../components/button/CustomButton';
 
 function ZenYoutube(props) {
   const [search, setSearch] = useState('');
@@ -28,23 +28,21 @@ function ZenYoutube(props) {
     setSearch(text);
   };
   let temp = [];
-  const clearJSX = obj => {
-    objectToJSX(obj);
-    return (temp = []);
-  };
-  const objectToJSX = obj => {
-    for (let i in obj) {
-      if (typeof obj[i] === 'object') {
-        objectToJSX(obj[i]);
-      } else {
-        temp.push(
-          <View style={{flexDirection: 'row'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 16}}>{i} :</Text>
-            <Text>{obj[i]}</Text>
-          </View>,
-        );
-      }
-    }
+
+  const Translate = obj => {
+    let temp = [];
+    const values = Object.entries(obj);
+    values.forEach((el, i) => {
+      temp.push(
+        <View
+          style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+          <Text style={{fontWeight: 'bold', fontSize: 16}}>
+            {JSON.stringify(el[0])} :
+          </Text>
+          <Text>{JSON.stringify(el[1])}</Text>
+        </View>,
+      );
+    });
     return temp;
   };
 
@@ -109,25 +107,22 @@ function ZenYoutube(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={() => onSubmitHandler('search')}>
-              Search Google
-            </Button>
-            <Button
+              click={() => onSubmitHandler('search')}
+              title="Search Google"></CustomButton>
+            <CustomButton
               icon="search-web"
               mode="contained"
               style={{marginVertical: 20}}
-              onPress={() => onSubmitHandler('render')}>
-              Render Here
-            </Button>
-            <Button
+              click={() => onSubmitHandler('render')}
+              title=" Render Here"></CustomButton>
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={() => onSubmitHandler('raw')}>
-              Get Raw Json
-            </Button>
+              title="Get Raw Json"
+              click={() => onSubmitHandler('raw')}></CustomButton>
           </View>
           {showRaw ? (
             <View style={{marginTop: 20}}>
@@ -135,11 +130,12 @@ function ZenYoutube(props) {
                 <View
                   key={i}
                   style={{
+                    marginTop: 40,
+                    padding: 10,
                     borderWidth: 1,
-                    marginVertical: 30,
-                    flexWrap: 'wrap',
+                    borderRadius: 10,
                   }}>
-                  {<Translate obj={el} />}
+                  {Translate(el)}
                 </View>
               ))}
             </View>

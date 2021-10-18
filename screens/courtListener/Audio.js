@@ -22,12 +22,14 @@ const RenderItems = ({item, navigation}) => {
       onPress={() => navigation.navigate('AudioDetails', {data: item})}>
       <View
         style={{
-          flexDirection: 'row',
           margin: 10,
+          flexDirection: 'row',
 
-          borderColor: 'black',
-          borderWidth: 1,
+          borderRadius: 10,
+          backgroundColor: '#fff2e6',
+          elevation: 8,
           padding: 10,
+          marginVertical: 15,
         }}>
         <View
           style={{

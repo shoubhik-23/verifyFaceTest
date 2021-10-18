@@ -20,12 +20,14 @@ const RenderItems = ({item, navigation}) => {
       }>
       <View
         style={{
-          flexDirection: 'row',
           margin: 10,
+          flexDirection: 'row',
 
-          borderColor: 'black',
-          borderWidth: 1,
+          borderRadius: 10,
+          backgroundColor: '#fff2e6',
+          elevation: 8,
           padding: 10,
+          marginVertical: 15,
         }}>
         <View
           style={{
@@ -71,7 +73,7 @@ function OriginatingCourt(props) {
     [],
   );
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, padding: 15}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : (

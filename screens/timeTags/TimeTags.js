@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator, Alert, Dimensions, Text, View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import {timeTags} from '../../store/actions';
 
 function TimeTags(props) {
@@ -35,7 +36,7 @@ function TimeTags(props) {
       <View
         style={{
           flexDirection: 'row',
-          alignItems: 'baseline',
+          alignItems: 'center',
           justifyContent: 'space-between',
         }}>
         <TextInput
@@ -46,19 +47,21 @@ function TimeTags(props) {
           onChangeText={onChangeHandler}></TextInput>
         <View
           style={{
-            marginTop: 30,
-
             alignSelf: 'center',
           }}>
-          <Button icon="search-web" mode="contained" onPress={onSubmitHandler}>
-            Search
-          </Button>
+          <CustomButton
+            icon="search-web"
+            mode="contained"
+            click={onSubmitHandler}
+            title="Search"></CustomButton>
         </View>
       </View>
       <View>
         {data.length > 0 ? (
           data.map((el, i) => (
-            <Text style={{fontSize: 15, margin: 10}}>* {el}</Text>
+            <Text key={i} style={{fontSize: 15, margin: 10}}>
+              * {el}
+            </Text>
           ))
         ) : loading ? (
           <ActivityIndicator size="large" style={{flex: 1}} />

@@ -131,10 +131,10 @@ function ZenserpNews(props) {
                 <View
                   key={i}
                   style={{
+                    marginTop: 40,
+                    padding: 10,
                     borderWidth: 1,
-                    marginVertical: 30,
-                    padding: 5,
-                    flexWrap: 'wrap',
+                    borderRadius: 10,
                   }}>
                   {<Translate obj={el} />}
                 </View>

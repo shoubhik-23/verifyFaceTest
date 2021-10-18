@@ -11,10 +11,12 @@ function Items(props) {
           justifyContent: 'center',
           alignItems: 'center',
           width: 150,
-          borderRadius: 10,
+          borderRadius: 40,
           height: 150,
           backgroundColor: props.color,
+          borderColor: 'white',
           elevation: 10,
+          marginVertical: 15,
         }}>
         <Text style={{fontSize: 18, fontWeight: 'bold', textAlign: 'center'}}>
           {props.title}

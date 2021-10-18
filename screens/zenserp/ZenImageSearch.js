@@ -15,10 +15,24 @@ import {
   View,
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
-import Translate from '../../components/helper/Translate';
 
 import {connect} from 'react-redux';
 import {zenserp} from '../../store/actions';
+const Translate = obj => {
+  let temp = [];
+  const values = Object.entries(obj);
+  values.forEach((el, i) => {
+    temp.push(
+      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+        <Text style={{fontWeight: 'bold', fontSize: 16}}>
+          {JSON.stringify(el[0])} :
+        </Text>
+        <Text>{JSON.stringify(el[1])}</Text>
+      </View>,
+    );
+  });
+  return temp;
+};
 const RenderItems = ({item}) => {
   return (
     <TouchableOpacity onPress={() => item.domain && Linking.openURL(item.url)}>
@@ -36,6 +50,8 @@ const RenderItems = ({item}) => {
             borderRadius: 20,
             margin: 10,
             overflow: 'hidden',
+            borderColor: 'white',
+            elevation: 8,
           }}>
           <Image
             style={{width: '100%', height: '100%'}}
@@ -156,11 +172,12 @@ function ZenImageSearch(props) {
                 <View
                   key={i}
                   style={{
+                    marginTop: 40,
+                    padding: 10,
                     borderWidth: 1,
-                    marginVertical: 30,
-                    flexWrap: 'wrap',
+                    borderRadius: 10,
                   }}>
-                  {<Translate obj={el} />}
+                  {Translate(el)}
                 </View>
               ))}
             </View>

@@ -15,10 +15,11 @@ import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
 import {completeCriminalCheck} from '../../store/actions';
 import RNPickerSelect from 'react-native-picker-select';
+import CustomButton from '../../components/button/CustomButton';
 
 function CriminalCheck(props) {
   const [firstName, setFirstName] = useState('');
-  const [selectedValue, setSelectedValue] = useState(0);
+  const [selectedValue, setSelectedValue] = useState(7);
   const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -50,13 +51,7 @@ function CriminalCheck(props) {
       <RNPickerSelect
         value={selectedValue}
         onValueChange={value => setSelectedValue(value)}
-        items={[
-          {label: 'All Database', value: 0},
-          {label: '2020 New Arrest', value: 1},
-          {label: '2017-2021 Arrest/Warrant Scrap', value: 2},
-          {label: 'All Arrest/Warrant', value: 3},
-          {label: 'All Criminal Records', value: 7},
-        ]}></RNPickerSelect>
+        items={[{label: 'All Criminal Records', value: 7}]}></RNPickerSelect>
     );
   };
   const RenderItems = ({item}) => {
@@ -70,9 +65,11 @@ function CriminalCheck(props) {
             flexDirection: 'row',
             margin: 10,
 
-            borderColor: 'black',
-            borderWidth: 1,
+            borderRadius: 10,
+            backgroundColor: '#fff2e6',
+            elevation: 8,
             padding: 10,
+            marginVertical: 15,
           }}>
           <View
             style={{
@@ -119,7 +116,7 @@ function CriminalCheck(props) {
               onChangeText={firstNameChangeHandler}
               placeholder="First Name"></TextInput>
           </View>
-          <View>
+          <View style={{marginVertical: 20}}>
             <TextInput
               value={lastName}
               mode="outlined"
@@ -135,12 +132,7 @@ function CriminalCheck(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
-              icon="search-web"
-              mode="contained"
-              onPress={onSearchHandler}>
-              Search
-            </Button>
+            <CustomButton title="Search" click={onSearchHandler} />
           </View>
         </View>
       )}

@@ -7,7 +7,6 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Dashboard from './screens/dashboard/Dashboard';
 import WebSearchDashboard from './screens/webSearch/WebSearchDashboard';
 import Trending from './screens/webSearch/trending/Trending';
-import ImageSearch from './screens/webSearch/trending/ImageSearch';
 import ZenVideo from './screens/zenserp/ZenVideo';
 import ZenserpDashboard from './screens/zenserp/ZenserpDashboard';
 import CriminalCheck from './screens/criminalCheck/CriminalCheck';
@@ -99,9 +98,6 @@ function App() {
           component={webImageSearch}></Stacks.Screen>
 
         <Stacks.Screen
-          name="ImageSearch"
-          component={ImageSearch}></Stacks.Screen>
-        <Stacks.Screen
           name="ZenserpDash"
           component={ZenserpDashboard}></Stacks.Screen>
         <Stacks.Screen
@@ -115,7 +111,6 @@ function App() {
         <Stacks.Screen
           name="YouTubeSearch"
           component={ZenYoutube}></Stacks.Screen>
-        {/* <Stacks.Screen name="queue" component={QueueComponent}></Stacks.Screen> */}
 
         <Stacks.Screen name="ZenserpVideo" component={ZenVideo}></Stacks.Screen>
         <Stacks.Screen

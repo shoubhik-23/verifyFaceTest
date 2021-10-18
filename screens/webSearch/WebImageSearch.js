@@ -14,13 +14,19 @@ import {
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import {contextWeb_ImageSearch} from '../../store/actions';
 const Translate = obj => {
   let temp = [];
   const values = Object.entries(obj);
   values.forEach((el, i) => {
     temp.push(
-      <View style={{flexDirection: 'row', flexWrap: 'wrap', marginVertical: 5}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          marginVertical: 5,
+        }}>
         <Text style={{fontWeight: 'bold', fontSize: 16}}>
           {JSON.stringify(el[0])} :
         </Text>
@@ -47,9 +53,11 @@ const RenderItems = ({item}) => {
             borderRadius: 20,
             margin: 10,
             overflow: 'hidden',
+            borderColor: 'white',
+            elevation: 8,
           }}>
           <Image
-            style={{width: '100%', height: '100%'}}
+            style={{width: '100%', height: '100%', borderRadius: 20}}
             source={{uri: item.thumbnail}}
           />
         </View>
@@ -100,7 +108,7 @@ function WebImageSearch(props) {
         <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
-              placeholder="search news"
+              placeholder="search image"
               mode="outlined"
               onChangeText={onChangeHandler}
               value={inputValue}></TextInput>
@@ -111,25 +119,25 @@ function WebImageSearch(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
-              icon="search-web"
-              mode="contained"
-              style={{marginVertical: 20}}
-              onPress={() => onSubmitHandler('render')}>
-              Render Here
-            </Button>
-            <Button
-              icon="search-web"
-              mode="contained"
-              onPress={() => onSubmitHandler('raw')}>
-              Get Raw Json
-            </Button>
+            <CustomButton
+              title="Render Here"
+              click={() => onSubmitHandler('render')}
+            />
+            <CustomButton
+              title="Get Raw Json"
+              click={() => onSubmitHandler('raw')}
+            />
           </View>
           {showRaw
             ? data.map((el, i) => (
                 <View
                   key={i}
-                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  style={{
+                    marginTop: 40,
+                    padding: 10,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}>
                   {Translate(el)}
                 </View>
               ))

@@ -3,7 +3,6 @@ import React from 'react';
 import {Text, View} from 'react-native';
 
 const Translate = ({obj}) => {
-  console.log(12, obj);
   const values = Object.entries(obj);
   return values.map((el, i) => {
     return (

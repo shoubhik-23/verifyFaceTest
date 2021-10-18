@@ -15,10 +15,11 @@ const objectToJsx = object => {
 };
 
 function CriminalDetails(props) {
-  console.log(90, props);
   return (
-    <View style={{flex: 1, padding: 10}}>
-      <ScrollView style={{flex: 1}}>
+    <View style={{flex: 1, padding: 15}}>
+      <ScrollView
+        style={{flex: 1}}
+        contentContainerStyle={{borderRadius: 10, borderWidth: 1, padding: 10}}>
         {objectToJsx(props.route.params.data)}
       </ScrollView>
     </View>

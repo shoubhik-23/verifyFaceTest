@@ -19,8 +19,20 @@ const Translate = obj => {
 
 function OrignationgDetail(props) {
   return (
-    <ScrollView style={{flex: 1, padding: 20}}>
-      {Translate(props.route.params.data)}
+    <ScrollView
+      style={{flex: 1, padding: 20}}
+      contentContainerStyle={{padding: 10}}>
+      <View
+        style={{
+          marginTop: 40,
+          padding: 10,
+          borderWidth: 1,
+          borderRadius: 10,
+          flex: 1,
+          marginBottom: 20,
+        }}>
+        {Translate(props.route.params.data)}
+      </View>
     </ScrollView>
   );
 }

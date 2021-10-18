@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import {
   courtListenerDocket,
   courtListenerOriginatingCourtInfo,
@@ -27,9 +28,11 @@ const RenderItems = ({item, navigation}) => {
           flexDirection: 'row',
           margin: 10,
 
-          borderColor: 'black',
-          borderWidth: 1,
+          borderRadius: 10,
+          backgroundColor: '#fff2e6',
+          elevation: 8,
           padding: 10,
+          marginVertical: 15,
         }}>
         <View
           style={{
@@ -114,12 +117,11 @@ function CaseSearch(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={onSearchHandler}>
-              SUBMIT
-            </Button>
+              click={onSearchHandler}
+              title="SUBMIT"></CustomButton>
           </View>
         </View>
       )}

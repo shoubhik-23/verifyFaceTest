@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
+import RawWrapper from '../../components/helper/RawWrapper';
 
 function DocketDetails(props) {
   const Translate = obj => {
@@ -21,7 +22,7 @@ function DocketDetails(props) {
   };
   return (
     <ScrollView style={{flex: 1, padding: 20}}>
-      {Translate(props.route.params.data)}
+      <RawWrapper> {Translate(props.route.params.data)}</RawWrapper>
     </ScrollView>
   );
 }

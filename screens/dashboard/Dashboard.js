@@ -4,7 +4,6 @@ import {FlatList, View} from 'react-native';
 import Items from '../../components/items/items';
 import Tiles from '../../components/tiles/Tiles';
 // import QueueComponent from '../../test/Queue';
-import {Button} from 'react-native-paper';
 
 function Dashboard(props) {
   const data = [
@@ -34,7 +33,6 @@ function Dashboard(props) {
               flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
-              marginBottom: 10,
             }}>
             <Items
               title={item.name}
@@ -45,7 +43,6 @@ function Dashboard(props) {
           </View>
         )}
       />
-      {/* <Button onPress={() => props.navigation.navigate('queue')}>QUEUe</Button> */}
     </View>
   );
 }

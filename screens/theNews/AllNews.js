@@ -11,19 +11,22 @@ import {
   Text,
   View,
 } from 'react-native';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import {theNewsApi_All} from '../../store/actions';
 const RenderItems = ({item}) => {
   return (
     <View
       style={{
-        flexDirection: 'row',
         margin: 10,
+        flexDirection: 'row',
 
-        borderColor: 'black',
-        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: '#fff2e6',
+        elevation: 8,
         padding: 10,
+        marginVertical: 15,
       }}>
       <View
         style={{
@@ -35,7 +38,7 @@ const RenderItems = ({item}) => {
           marginLeft: 1,
         }}>
         <Image
-          style={{height: '100%', width: '100%'}}
+          style={{height: '100%', width: '100%', backgroundColor: 'grey'}}
           source={{uri: item.image_url}}></Image>
       </View>
       <View
@@ -89,7 +92,7 @@ function AllNews(props) {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, padding: 20}}>
       {loading ? (
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : data.length > 0 && !showRaw ? (
@@ -107,25 +110,28 @@ function AllNews(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
+            <CustomButton
               icon="search-web"
               mode="contained"
               style={{marginVertical: 20}}
-              onPress={() => onSubmitHandler('render')}>
-              Render Here
-            </Button>
-            <Button
+              click={() => onSubmitHandler('render')}
+              title="Render Here"></CustomButton>
+            <CustomButton
               icon="search-web"
               mode="contained"
-              onPress={() => onSubmitHandler('raw')}>
-              Get Raw Json
-            </Button>
+              click={() => onSubmitHandler('raw')}
+              title="Get Raw Json"></CustomButton>
           </View>
           {showRaw
             ? data.map((el, i) => (
                 <View
                   key={i}
-                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  style={{
+                    marginTop: 40,
+                    padding: 10,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}>
                   {Translate(el)}
                 </View>
               ))

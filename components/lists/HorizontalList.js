@@ -9,12 +9,14 @@ const HorizontalList = props => {
   return (
     <View
       style={{
-        flexDirection: 'row',
         margin: 10,
+        flexDirection: 'row',
 
-        borderColor: 'black',
-        borderWidth: 1,
+        borderRadius: 10,
+        backgroundColor: '#fff2e6',
+        elevation: 8,
         padding: 10,
+        marginVertical: 15,
       }}>
       <View
         style={{
@@ -26,7 +28,7 @@ const HorizontalList = props => {
           marginLeft: 1,
         }}>
         <Image
-          style={{height: 100, width: 100}}
+          style={{height: 100, width: 100, backgroundColor: 'gray'}}
           source={{uri: props.image_url}}></Image>
       </View>
       <View

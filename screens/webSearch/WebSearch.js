@@ -13,45 +13,10 @@ import {
 } from 'react-native';
 import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
+import HorizontalList from '../../components/lists/HorizontalList';
 import {contextWeb_News, contextWeb_Web} from '../../store/actions';
-const RenderItems = ({item}) => {
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        margin: 10,
 
-        borderColor: 'black',
-        borderWidth: 1,
-        padding: 10,
-      }}>
-      <View
-        style={{
-          height: 80,
-          width: 80,
-          borderRadius: 10,
-          overflow: 'hidden',
-          marginRight: 15,
-          marginLeft: 1,
-        }}>
-        <Image
-          style={{height: '100%', width: '100%'}}
-          source={{uri: item.image.url}}></Image>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          flex: 1,
-        }}>
-        <Text
-          style={{fontSize: 15, flex: 1}}
-          onPress={() => Linking.openURL(item.url)}>
-          {item.title}
-        </Text>
-      </View>
-    </View>
-  );
-};
 const Translate = obj => {
   let temp = [];
   const values = Object.entries(obj);
@@ -102,16 +67,20 @@ function WebSearch(props) {
         <ActivityIndicator size="large" style={{flex: 1}} />
       ) : (data.length > 0) & !showRaw ? (
         <FlatList
-          style={{marginBottom: 50}}
           data={data}
-          renderItem={RenderItems}
-          keyExtractor={item => item.id}
+          renderItem={({item, index}) => (
+            <HorizontalList
+              title={item.title}
+              image_url={item.image.url}
+              url={item.url}
+            />
+          )}
         />
       ) : (
         <ScrollView style={{flex: 1}}>
           <View>
             <TextInput
-              placeholder="search news"
+              placeholder="search web"
               mode="outlined"
               onChangeText={onChangeHandler}
               value={inputValue}></TextInput>
@@ -122,25 +91,25 @@ function WebSearch(props) {
               width: Dimensions.get('window').width / 2,
               alignSelf: 'center',
             }}>
-            <Button
-              icon="search-web"
-              mode="contained"
-              style={{marginVertical: 20}}
-              onPress={() => onSubmitHandler('render')}>
-              Render Here
-            </Button>
-            <Button
-              icon="search-web"
-              mode="contained"
-              onPress={() => onSubmitHandler('raw')}>
-              Get Raw Json
-            </Button>
+            <CustomButton
+              title="Render Here"
+              click={() => onSubmitHandler('render')}
+            />
+            <CustomButton
+              title="Get Raw Json"
+              click={() => onSubmitHandler('raw')}
+            />
           </View>
           {showRaw
             ? data.map((el, i) => (
                 <View
                   key={i}
-                  style={{marginTop: 40, padding: 10, borderWidth: 2}}>
+                  style={{
+                    marginTop: 40,
+                    padding: 10,
+                    borderWidth: 1,
+                    borderRadius: 10,
+                  }}>
                   {Translate(el)}
                 </View>
               ))

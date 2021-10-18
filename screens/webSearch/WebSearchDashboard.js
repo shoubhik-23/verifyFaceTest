@@ -5,8 +5,8 @@ import Items from '../../components/items/items';
 const data = [
   {name: 'Trending', routeName: 'Trending', color: '#f5428d'},
   {name: 'Image Search', routeName: 'WebImage', color: '#f5a442'},
-  {name: 'Web News Search', routeName: 'WebNewsSearch', color: '#f5428d'},
-  {name: 'Web Search', routeName: 'WebSearch', color: '#f5a442'},
+  {name: 'Web News Search', routeName: 'WebNewsSearch', color: '#f5a442'},
+  {name: 'Web Search', routeName: 'WebSearch', color: '#f5428d'},
 ];
 
 function WebSearchDashboard(props) {

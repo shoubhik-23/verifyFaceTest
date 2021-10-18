@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable handle-callback-err */
 /* eslint-disable react/self-closing-comp */
+import axios from 'axios';
 import React, {memo, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
@@ -12,8 +13,10 @@ import {
 } from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import CustomButton from '../../components/button/CustomButton';
 import Translate from '../../components/helper/Translate';
 import ModalComponent from '../../components/modal/Modal';
+import {MICROBILT_ID, MICROBILT_SECRET} from '../../constants/constants';
 import {enhancedPeopleSearch, setMicrobiltToken} from '../../store/actions';
 
 const PeopleSearchDetail = memo(props => {
@@ -62,9 +65,12 @@ const PeopleSearchDetail = memo(props => {
           {props.data.ContactInfo.map((el, i) => {
             return (
               <View
+                key={i}
                 style={{
-                  marginVertical: 10,
+                  marginTop: 40,
+                  padding: 10,
                   borderWidth: 1,
+                  borderRadius: 10,
                 }}>
                 <Translate obj={el}></Translate>
               </View>
@@ -117,7 +123,7 @@ function PeopleSearch(props) {
       ? setPersonalInfo({...personalInfo, firstName: text})
       : setPersonalInfo({...personalInfo, lastName: text});
   };
-  const onSeachHandler = () => {
+  const onSeachHandler = async () => {
     let data = {
       PersonInfo: {
         PersonName: {
@@ -138,8 +144,17 @@ function PeopleSearch(props) {
       },
     };
     setLoading(true);
+    const response = await axios.post(
+      'https://apitest.microbilt.com/OAuth/GetAccessToken',
+      {
+        client_id: MICROBILT_ID,
+        client_secret: MICROBILT_SECRET,
+        grant_type: 'client_credentials',
+      },
+    );
+    const token = `Bearer ${response.data.access_token}`;
     props
-      .enhancedPeopleSearch(data, props.token)
+      .enhancedPeopleSearch(data, token)
       .then(data => {
         setLoading(false);
         console.log(data);
@@ -242,12 +257,11 @@ function PeopleSearch(props) {
                 width: Dimensions.get('window').width / 2,
                 alignSelf: 'center',
               }}>
-              <Button
+              <CustomButton
                 icon="search-web"
                 mode="contained"
-                onPress={onSeachHandler}>
-                Search
-              </Button>
+                click={onSeachHandler}
+                title="Search"></CustomButton>
             </View>
           </View>
         ) : (
@@ -263,11 +277,7 @@ function PeopleSearch(props) {
     </View>
   );
 }
-const mapStatesToProps = state => {
-  return {
-    token: state.token,
-  };
-};
+
 const mapDispatchToProps = dispatch => {
   return {
     enhancedPeopleSearch: (data, token) =>
@@ -276,4 +286,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStatesToProps, mapDispatchToProps)(PeopleSearch);
+export default connect(null, mapDispatchToProps)(PeopleSearch);
